@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
 import axiosWithAuth from '../api/axiosWithAuth';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 const initialColor = {
 	color: '',
 	code: { hex: '' },
+	id: '',
 };
 
 const ColorList = ({ colors, updateColors }) => {
@@ -14,6 +15,7 @@ const ColorList = ({ colors, updateColors }) => {
 	const [colorToEdit, setColorToEdit] = useState(initialColor);
 
 	const { id } = useParams();
+	const { push } = useHistory();
 
 	const editColor = (color) => {
 		setEditing(true);
@@ -23,10 +25,13 @@ const ColorList = ({ colors, updateColors }) => {
 	const saveEdit = (e) => {
 		e.preventDefault();
 		axiosWithAuth()
-			.put(`/api/colors/${id}`, colors.id)
+			.put(`/api/colors/${id}`, colors)
 			.then((res) => {
 				console.log('pl: ColorList.js: saveEdit: axios put: res: ', res);
-				updateColors(res.data);
+				updateColors({
+					...colors,
+					[e.target.name]: res.data,
+				});
 			})
 			.catch((err) => {
 				console.error('Unable to save colors', err.message);
@@ -38,6 +43,15 @@ const ColorList = ({ colors, updateColors }) => {
 
 	const deleteColor = (color) => {
 		// make a delete request to delete this color
+		axiosWithAuth()
+			.delete(`/api/colors/${color.id}`)
+			.then((res) => {
+				console.log('pl: ColorList.js: deleteColor: axios delete: res: ', res);
+				push(`/bubble-page`);
+			})
+			.catch((err) => {
+				console.error('Unable to delete color', err.message);
+			});
 	};
 
 	return (
