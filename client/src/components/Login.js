@@ -23,7 +23,7 @@ class Login extends React.Component {
 	handleLogin = (e) => {
 		e.preventDefault();
 		axiosWithAuth()
-			.post('/api/login', this.state.credentials)
+			.post('/api/login', { username: 'Lambda School', password: 'i<3Lambd4' })
 			.then((res) => {
 				console.log('pl: Login.js: handleLogin: axios post: res: ', res);
 				localStorage.setItem('token', res.data.payload);
@@ -38,12 +38,14 @@ class Login extends React.Component {
 		return (
       <div>
         <form onSubmit={this.handleLogin}>
+          <label htmlFor='username'>Username: </label>
           <input
             type="text"
             name="username"
             value={this.state.credentials.username}
             onChange={this.handleChange}
           />
+          <label htmlFor='password'>Password: </label>
           <input
             type="password"
             name="password"
