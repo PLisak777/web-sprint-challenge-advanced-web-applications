@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
 import Bubbles from './Bubbles';
 import ColorList from './ColorList';
@@ -14,13 +13,13 @@ const BubblePage = () => {
 		axiosWithAuth()
 			.get('/api/colors')
 			.then((res) => {
-				console.log('pl: BubblePage.js: getColors: axios get: res: ', res);
+				console.log('pl: BubblePage.js: useEffect: axios get: res: ', res);
 				setColorList(res.data);
 			})
 			.catch((err) => {
 				console.error('Unable to retrieve colors', err.message);
 			});
-	});
+	}, []);
 
 	return (
 		<>
