@@ -6,7 +6,6 @@ import { useParams, useHistory } from 'react-router-dom';
 const initialColor = {
 	color: '',
 	code: { hex: '' },
-	id: '',
 };
 
 const ColorList = ({ colors, updateColors }) => {
@@ -25,7 +24,7 @@ const ColorList = ({ colors, updateColors }) => {
 	const saveEdit = (e) => {
 		e.preventDefault();
 		axiosWithAuth()
-			.put(`/api/colors/${id}`, colors)
+			.put(`/api/colors/${colorToEdit.id}`, colors)
 			.then((res) => {
 				console.log('pl: ColorList.js: saveEdit: axios put: res: ', res);
 				updateColors({
@@ -44,7 +43,7 @@ const ColorList = ({ colors, updateColors }) => {
 	const deleteColor = (color) => {
 		// make a delete request to delete this color
 		axiosWithAuth()
-			.delete(`/api/colors/${color.id}`)
+			.delete(`/api/colors/${colors.id}`)
 			.then((res) => {
 				console.log('pl: ColorList.js: deleteColor: axios delete: res: ', res);
 				push(`/bubble-page`);
